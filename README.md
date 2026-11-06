@@ -2,7 +2,7 @@
 
 Automatic HTTPS certificates for Windows, macOS and Linux.
 
-> **Preview.** `httpsagent list` shows the certificates on a machine and when they expire. Certificate renewal is not available yet.
+> **Preview.** `httpsagent list` shows the certificates installed on a machine and when they expire. Certificate renewal is not available yet.
 
 ## Install
 
@@ -47,15 +47,17 @@ HttpsAgent releases are not code-signed yet. Some antivirus products (for exampl
 ## Usage
 
 ```
-httpsagent list           List the certificates on this machine
-httpsagent list --json    The same, as JSON (for scripts)
+httpsagent list           List the certificates installed on this machine
+httpsagent list --all     Also list the ones that came with the operating system
+httpsagent list --json    The same as JSON, for scripts (works with --all too)
 httpsagent --version      Show the version
 httpsagent                Show information
 ```
 
 `list` reads the certificate stores (Windows), the keychains (macOS) or the CA directories and web server
 configuration — Let's Encrypt, nginx, Apache — (Linux). Certificates that came with the operating system are marked
-`system`, everything else `installed`; when in doubt a certificate is shown as `installed`. It needs no administrator
+`system`, everything else `installed`; when in doubt a certificate is shown as `installed`. By default only the
+installed ones are listed and the system ones are counted below the table; `--all` lists them too. It needs no administrator
 rights: places it cannot read are listed below the table (run with `sudo` or as Administrator to include them). It
 reads only — it changes nothing, never decodes, shows or stores private keys (only whether one is present), and makes
 no network connection.
