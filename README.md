@@ -14,6 +14,22 @@ brew install httpsagent/tap/httpsagent
 
 Update with `brew upgrade httpsagent`.
 
+### Ubuntu and Debian (apt)
+
+Ubuntu 22.04, Debian 12 and later, x64 and ARM64:
+
+```sh
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://pkg.httpsagent.com/apt/gpg.key | sudo tee /etc/apt/keyrings/httpsagent.asc > /dev/null
+echo "deb [signed-by=/etc/apt/keyrings/httpsagent.asc] https://pkg.httpsagent.com/apt stable main" \
+  | sudo tee /etc/apt/sources.list.d/httpsagent.list
+sudo apt update
+sudo apt install httpsagent
+```
+
+Updates come with `sudo apt update && sudo apt upgrade`. The packages are signed with
+`HttpsAgent Release Signing <release@httpsagent.com>`, fingerprint `2F3F B8E9 9F99 6554 80C8 0044 51F1 8BF9 E034 6FBF`.
+
 ### Windows (Scoop)
 
 ```powershell
@@ -35,6 +51,8 @@ Download the archive for your platform from [Releases](https://github.com/httpsa
 | macOS Intel | `httpsagent-<version>-osx-x64.tar.gz` |
 | Linux x64 | `httpsagent-<version>-linux-x64.tar.gz` |
 | Linux ARM64 | `httpsagent-<version>-linux-arm64.tar.gz` |
+| Debian / Ubuntu x64 | `httpsagent_<version>_amd64.deb` |
+| Debian / Ubuntu ARM64 | `httpsagent_<version>_arm64.deb` |
 
 - Every release includes `SHA256SUMS` to verify the downloads.
 - Linux builds need glibc 2.35 or later (Ubuntu 22.04, Debian 12 and later).
