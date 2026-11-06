@@ -14,6 +14,15 @@ brew install httpsagent/tap/httpsagent
 
 Update with `brew upgrade httpsagent`.
 
+### Windows (Scoop)
+
+```powershell
+scoop bucket add httpsagent https://github.com/httpsagent/scoop-bucket
+scoop install httpsagent
+```
+
+Update with `scoop update httpsagent`.
+
 ### Download
 
 Download the archive for your platform from [Releases](https://github.com/httpsagent/httpsagent/releases), extract it and run `httpsagent`.
