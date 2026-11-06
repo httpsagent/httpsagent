@@ -9,9 +9,10 @@ Automatic HTTPS certificates for Windows, macOS and Linux.
 ### macOS and Linux (Homebrew)
 
 ```sh
-brew tap httpsagent/tap
-brew install httpsagent
+brew install httpsagent/tap/httpsagent
 ```
+
+Update with `brew upgrade httpsagent`.
 
 ### Download
 
