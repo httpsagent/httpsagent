@@ -40,6 +40,10 @@ Download the archive for your platform from [Releases](https://github.com/httpsa
 - Linux builds need glibc 2.35 or later (Ubuntu 22.04, Debian 12 and later).
 - On macOS, prefer Homebrew: macOS blocks files downloaded with a web browser because the binary is not notarized.
 
+### Antivirus warnings
+
+HttpsAgent releases are not code-signed yet. Some antivirus products (for example Norton's Download Intelligence) hold a new, unsigned release on its first run and scan it in the cloud, which takes about a minute; `httpsagent` starts normally once the scan finishes. On Windows, SmartScreen may also warn when an archive downloaded with a browser is opened from Explorer. If in doubt, compare your download with `SHA256SUMS`.
+
 ## Usage
 
 ```
