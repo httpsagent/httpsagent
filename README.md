@@ -19,16 +19,13 @@ Update with `brew upgrade httpsagent`.
 Ubuntu 22.04, Debian 12 and later, x64 and ARM64:
 
 ```sh
-sudo install -d -m 0755 /etc/apt/keyrings
-curl -fsSL https://pkg.httpsagent.com/apt/gpg.key | sudo tee /etc/apt/keyrings/httpsagent.asc > /dev/null
-echo "deb [signed-by=/etc/apt/keyrings/httpsagent.asc] https://pkg.httpsagent.com/apt stable main" \
-  | sudo tee /etc/apt/sources.list.d/httpsagent.list
-sudo apt update
-sudo apt install httpsagent
+sudo curl -fsSLo /etc/apt/sources.list.d/httpsagent.sources https://pkg.httpsagent.com/apt/httpsagent.sources
+sudo apt update && sudo apt install httpsagent
 ```
 
-Updates come with `sudo apt update && sudo apt upgrade`. The packages are signed with
-`HttpsAgent Release Signing <release@httpsagent.com>`, fingerprint `2F3F B8E9 9F99 6554 80C8 0044 51F1 8BF9 E034 6FBF`.
+Updates come with `sudo apt update && sudo apt upgrade`. The file adds the repository together with its signing key,
+`HttpsAgent Release Signing <release@httpsagent.com>`, fingerprint `2F3F B8E9 9F99 6554 80C8 0044 51F1 8BF9 E034 6FBF`
+(the key alone: <https://pkg.httpsagent.com/apt/gpg.key>).
 
 ### Windows (Scoop)
 
