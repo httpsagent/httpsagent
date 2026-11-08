@@ -6,6 +6,16 @@ Automatic HTTPS certificates for Windows, macOS and Linux.
 
 ## Install
 
+### Quick install (Linux and macOS)
+
+```sh
+curl -fsSL https://pkg.httpsagent.com/install.sh | sh
+```
+
+[install.sh](https://pkg.httpsagent.com/install.sh) uses the apt or dnf repository below where it can, Homebrew on
+macOS, and otherwise the release archive (checked against `SHA256SUMS`) into `/usr/local/bin`, or `~/.local/bin`
+without root. `HTTPSAGENT_VERSION=0.2.3` installs a given version.
+
 ### macOS and Linux (Homebrew)
 
 ```sh
@@ -26,6 +36,19 @@ sudo apt update && sudo apt install httpsagent
 Updates come with `sudo apt update && sudo apt upgrade`. The file adds the repository together with its signing key,
 `HttpsAgent Release Signing <release@httpsagent.com>`, fingerprint `2F3F B8E9 9F99 6554 80C8 0044 51F1 8BF9 E034 6FBF`
 (the key alone: <https://pkg.httpsagent.com/apt/gpg.key>).
+
+### RHEL, Rocky, Alma, Fedora and Amazon Linux (dnf)
+
+RHEL 9, Amazon Linux 2023, Fedora and later, and their rebuilds; x64 and ARM64:
+
+```sh
+sudo curl -fsSLo /etc/yum.repos.d/httpsagent.repo https://pkg.httpsagent.com/rpm/httpsagent.repo
+sudo dnf install httpsagent
+```
+
+Updates come with `sudo dnf upgrade`. Packages and package lists are signed with
+`HttpsAgent RPM Signing <release@httpsagent.com>`, fingerprint `4B00 FFB7 7427 F420 8430 BFDB F770 7E48 552B 4AE7`
+(<https://pkg.httpsagent.com/rpm/gpg.key>); dnf asks once to import it.
 
 ### Windows (Scoop)
 
@@ -50,9 +73,11 @@ Download the archive for your platform from [Releases](https://github.com/httpsa
 | Linux ARM64 | `httpsagent-<version>-linux-arm64.tar.gz` |
 | Debian / Ubuntu x64 | `httpsagent_<version>_amd64.deb` |
 | Debian / Ubuntu ARM64 | `httpsagent_<version>_arm64.deb` |
+| RHEL / Fedora / Amazon Linux x64 | `httpsagent-<version>-1.x86_64.rpm` |
+| RHEL / Fedora / Amazon Linux ARM64 | `httpsagent-<version>-1.aarch64.rpm` |
 
 - Every release includes `SHA256SUMS` to verify the downloads.
-- Linux builds need glibc 2.35 or later (Ubuntu 22.04, Debian 12 and later).
+- Linux builds need glibc 2.34 or later (Ubuntu 22.04, Debian 12, RHEL 9, Amazon Linux 2023 and later).
 - On macOS, prefer Homebrew: macOS blocks files downloaded with a web browser because the binary is not notarized.
 
 ### Antivirus warnings
