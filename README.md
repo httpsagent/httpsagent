@@ -1,8 +1,17 @@
 # HttpsAgent
 
-Automatic HTTPS certificates for Windows, macOS and Linux.
+The TLS certificates of your web servers — IIS, nginx, Apache, LiteSpeed, Caddy — and when they expire. Windows, macOS
+and Linux.
 
-> **Preview.** `httpsagent list` shows the certificates installed on a machine and when they expire. Certificate renewal is not available yet.
+`httpsagent list` shows the TLS (HTTPS) certificates on a machine, grouped by the web server that uses them, with their
+expiry dates and the program that obtained them (certbot, acme.sh, win-acme, Certify The Web, hosting panels). It also
+lists the web servers it cannot read yet, and development certificates for `localhost`. As a table for people, or as
+JSON for scripts and monitoring. It only reads: no network, no administrator rights needed.
+
+Certificate lifetimes are getting shorter (200 days today, 47 days by 2029) and Let's Encrypt no longer emails expiry
+warnings, so it pays to see your expiry dates yourself.
+
+> **Preview.** Automatic renewal is not available yet.
 
 ## Install
 
@@ -87,20 +96,44 @@ HttpsAgent releases are not code-signed yet. Some antivirus products (for exampl
 ## Usage
 
 ```
-httpsagent list           List the certificates installed on this machine
-httpsagent list --all     Also list the ones that came with the operating system
-httpsagent list --json    The same as JSON, for scripts (works with --all too)
+httpsagent list           TLS certificates, grouped by the web server that uses them
+httpsagent list --all     Also every other certificate on this machine (CAs, code signing, ...)
+httpsagent list --json    The same as JSON for scripts and monitoring (works with --all too)
 httpsagent --version      Show the version
 httpsagent                Show information
 ```
 
-`list` reads the certificate stores (Windows), the keychains (macOS) or the CA directories and web server
-configuration — Let's Encrypt, nginx, Apache — (Linux). Certificates that came with the operating system are marked
-`system`, everything else `installed`; when in doubt a certificate is shown as `installed`. By default only the
-installed ones are listed and the system ones are counted below the table; `--all` lists them too. It needs no administrator
-rights: places it cannot read are listed below the table (run with `sudo` or as Administrator to include them). It
-reads only — it changes nothing, never decodes, shows or stores private keys (only whether one is present), and makes
-no network connection.
+**What `list` shows.** TLS server certificates: the kind a web server (and later a mail server) uses, public ones from
+Let's Encrypt, Sectigo, DigiCert and others, and development certificates for `localhost` (marked `(dev)`). They are
+grouped under the web server that uses them — IIS, IIS Express and other http.sys services on Windows; nginx, Apache,
+LiteSpeed and Caddy on Linux; Apache, and nginx, httpd and Caddy from Homebrew on macOS — with the binding (address,
+port, host name, IIS site or configuration file). Certificates no web server uses come first. Every row says when the
+certificate expires (expired ones in red, fewer than 30 days left in yellow, the ones that end soonest first) and, where
+the evidence is on the machine, which program obtained it. A web server that refers to a certificate that is not there
+shows a red "missing certificate" row.
+
+Web servers and hosting software whose certificates HttpsAgent cannot read yet — HAProxy, OpenLiteSpeed, Traefik,
+Lighttpd, Tomcat, ASP.NET Core (Kestrel), Apache and nginx on Windows (XAMPP, WampServer, Laragon), cPanel, Plesk,
+DirectAdmin and other panels, Docker — are listed under "certificate support in development".
+
+**`--all`** adds every other certificate on the machine — certificate authorities (marked `system` when they came with
+the operating system), client, code signing and email certificates — in a section of their own: HttpsAgent shows them,
+but they are not TLS server certificates and it does not manage them.
+
+**`--json`** writes the same as one JSON document: every certificate with its `category` (`server`, `development`,
+`ca`, …), `inScope`, `obtainedBy` and the `servers` that use it; every detected server with its `support` level
+(`full` or `planned`), the `evidence` that it is installed and its `bindings` (each with a `status`: `found`, `missing`,
+`unreadable`, …); `hidden` counts what was left out without `--all`. Field names are a contract: later versions add
+fields, they do not rename them. For example, the certificates IIS uses that expire within 30 days:
+
+```sh
+httpsagent list --json | jq '.certificates[] | select(.servers | index("iis")) | select(.daysLeft < 30) | .name'
+```
+
+**Permissions.** It needs no administrator rights. Places it cannot read are listed below the table; running with
+`sudo` or as Administrator includes them (for example Let's Encrypt's private directory on Linux, or IIS site names on
+Windows). It reads only — it changes nothing, never decodes, shows or stores private keys (only whether one is
+present), and makes no network connection.
 
 ## License
 
